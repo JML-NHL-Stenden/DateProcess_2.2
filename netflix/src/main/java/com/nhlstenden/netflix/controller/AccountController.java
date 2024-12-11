@@ -1,56 +1,70 @@
-package com.nhlstenden.netflix.controller;
+package com.nhlstenden.Netflix.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.nhlstenden.Netflix.entity.Account;
+import com.nhlstenden.Netflix.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.nhlstenden.netflix.service.AccountService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/accounts")
-@Tag(name = "Account Management", description = "Account operations")
+@RequestMapping("/api/accounts")
 public class AccountController {
+
+    private final AccountService accountService;
+    private final EntityManager entityManager;
+
     @Autowired
-    private AccountService accountService;
+    public AccountController(AccountService accountService, EntityManager entityManager) {
+        this.accountService = accountService;
+        this.entityManager = entityManager;
+    }
 
-//    @PostMapping("/register")
-//    @Operation(summary = "Register new account")
-//    public ResponseEntity<AccountDTO> registerAccount(@RequestBody AccountRegistrationDTO dto) {
-//        return ResponseEntity.ok(accountService.registerAccount(dto));
-//    }
+    @GetMapping
+    public ResponseEntity<List<Account>> getAllAccounts() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
+    }
 
-//    @PostMapping("/login")
-//    @Operation(summary = "Login to account")
-//    public ResponseEntity<JwtResponse> login(@RequestBody LoginDTO loginDto) {
-//        return ResponseEntity.ok(accountService.login(loginDto));
-//    }
+    @GetMapping("/{email}")
+    public ResponseEntity<Account> getAccount(@PathVariable String email) {
+        return ResponseEntity.ok(accountService.getAccountByEmail(email));
+    }
 
-//    @GetMapping("/{accountId}")
-//    @Operation(summary = "Get account details")
-//    public ResponseEntity<AccountDTO> getAccount(@PathVariable Long accountId) {
-//        return ResponseEntity.ok(accountService.getAccount(accountId));
-//    }
+    @PostMapping
+    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+        return ResponseEntity.ok(accountService.createAccount(account));
+    }
 
-//    @PatchMapping("/{accountId}")
-//    @Operation(summary = "Update account details")
-//    public ResponseEntity<AccountDTO> updateAccount(
-//            @PathVariable Long accountId,
-//            @RequestBody AccountUpdateDTO dto) {
-//        return ResponseEntity.ok(accountService.updateAccount(accountId, dto));
-//    }
+    @PutMapping("/{email}")
+    public ResponseEntity<Account> updateAccount(@PathVariable String email, @RequestBody Account account) {
+        return ResponseEntity.ok(accountService.updateAccount(email, account));
+    }
 
-    @DeleteMapping("/{accountId}")
-    @Operation(summary = "Delete account")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long accountId) {
-        accountService.deleteAccount(accountId);
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable String email) {
+        accountService.deleteAccount(email);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{email}/block")
+    public ResponseEntity<Void> blockAccount(@PathVariable String email) {
+        accountService.blockAccount(email);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{accountId}/block")
-    @Operation(summary = "Block account")
-    public ResponseEntity<Void> blockAccount(@PathVariable Long accountId) {
-        accountService.blockAccount(accountId);
+    @PatchMapping("/{email}/unblock")
+    public ResponseEntity<Void> unblockAccount(@PathVariable String email) {
+        accountService.unblockAccount(email);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Account>> getAllAccountsDirect() {
+        Query query = entityManager.createNativeQuery("SELECT * FROM account", Account.class);
+        @SuppressWarnings("unchecked")
+        List<Account> accounts = (List<Account>) query.getResultList();
+        return ResponseEntity.ok(accounts);
     }
 }

@@ -1,14 +1,11 @@
-package com.nhlstenden.netflix.repository;
+package com.nhlstenden.Netflix.repository;
 
-import com.nhlstenden.netflix.entity.Account;
+import com.nhlstenden.Netflix.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
-    Optional<Account> findByEmail(String email);
+public interface AccountRepository extends JpaRepository<Account, Integer> {
+    Account findByEmail(String email);
     boolean existsByEmail(String email);
-    Optional<Account> findByRestoreToken(Integer restoreToken);
 }

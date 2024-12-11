@@ -1,11 +1,13 @@
-package com.nhlstenden.netflix;
+package com.nhlstenden.Netflix;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication  // This annotation includes @ComponentScan, @Configuration, and @EnableAutoConfiguration
+@SpringBootApplication
 public class NetflixApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(NetflixApplication.class, args);
 	}
+
 }

@@ -1,4 +1,4 @@
-package com.nhlstenden.netflix;
+package com.nhlstenden.Netflix;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
