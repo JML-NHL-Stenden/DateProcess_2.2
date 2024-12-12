@@ -1,7 +1,7 @@
-package com.nhlstenden.Netflix.controller;
+package com.nhlstenden.netflix.controller;
 
-import com.nhlstenden.Netflix.entity.Account;
-import com.nhlstenden.Netflix.service.AccountService;
+import com.nhlstenden.netflix.entity.Account;
+import com.nhlstenden.netflix.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

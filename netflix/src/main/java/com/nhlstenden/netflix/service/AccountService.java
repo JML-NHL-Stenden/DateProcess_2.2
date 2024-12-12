@@ -1,7 +1,7 @@
-package com.nhlstenden.Netflix.service;
+package com.nhlstenden.netflix.service;
 
-import com.nhlstenden.Netflix.entity.Account;
-import com.nhlstenden.Netflix.repository.AccountRepository;
+import com.nhlstenden.netflix.entity.Account;
+import com.nhlstenden.netflix.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;

@@ -1,4 +1,4 @@
-package com.nhlstenden.Netflix.entity;
+package com.nhlstenden.netflix.entity;
 
 import jakarta.persistence.*;
 

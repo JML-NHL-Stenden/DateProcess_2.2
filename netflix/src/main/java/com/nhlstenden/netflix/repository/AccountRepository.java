@@ -1,6 +1,6 @@
-package com.nhlstenden.Netflix.repository;
+package com.nhlstenden.netflix.repository;
 
-import com.nhlstenden.Netflix.entity.Account;
+import com.nhlstenden.netflix.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
