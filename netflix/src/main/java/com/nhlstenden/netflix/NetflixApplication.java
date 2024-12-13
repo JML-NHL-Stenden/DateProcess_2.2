@@ -1,4 +1,4 @@
-package com.nhlstenden.Netflix;
+package com.nhlstenden.netflix;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
