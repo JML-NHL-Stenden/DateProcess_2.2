@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Integer> {
+public interface MovieRepository extends JpaRepository<Movie, Integer>
+{
     List<Movie> findByTitleContainingIgnoreCase(String title);
+
     List<Movie> findByIsFeatured(Boolean isFeatured);
 }

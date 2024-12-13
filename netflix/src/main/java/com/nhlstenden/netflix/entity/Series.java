@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "series")
-public class Series {
+public class Series
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +25,12 @@ public class Series {
     private Boolean isFeatured = false;
 
     // Constructors
-    public Series() {}
+    public Series()
+    {
+    }
 
-    public Series(String title, String description, Integer totalSeasons, Boolean isFeatured) {
+    public Series(String title, String description, Integer totalSeasons, Boolean isFeatured)
+    {
         this.title = title;
         this.description = description;
         this.totalSeasons = totalSeasons;
@@ -34,43 +38,53 @@ public class Series {
     }
 
     // Getters and Setters
-    public Integer getSeriesId() {
+    public Integer getSeriesId()
+    {
         return seriesId;
     }
 
-    public void setSeriesId(Integer seriesId) {
+    public void setSeriesId(Integer seriesId)
+    {
         this.seriesId = seriesId;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public Integer getTotalSeasons() {
+    public Integer getTotalSeasons()
+    {
         return totalSeasons;
     }
 
-    public void setTotalSeasons(Integer totalSeasons) {
+    public void setTotalSeasons(Integer totalSeasons)
+    {
         this.totalSeasons = totalSeasons;
     }
 
-    public Boolean getIsFeatured() {
+    public Boolean getIsFeatured()
+    {
         return isFeatured;
     }
 
-    public void setIsFeatured(Boolean isFeatured) {
+    public void setIsFeatured(Boolean isFeatured)
+    {
         this.isFeatured = isFeatured;
     }
 }

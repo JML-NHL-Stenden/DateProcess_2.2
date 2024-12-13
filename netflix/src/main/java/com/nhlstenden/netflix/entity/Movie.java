@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "movie")
-public class Movie {
+public class Movie
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +25,12 @@ public class Movie {
     private Boolean isFeatured;
 
     // Constructors
-    public Movie() {}
+    public Movie()
+    {
+    }
 
-    public Movie(String title, java.sql.Time duration, String description, Boolean isFeatured) {
+    public Movie(String title, java.sql.Time duration, String description, Boolean isFeatured)
+    {
         this.title = title;
         this.duration = duration;
         this.description = description;
@@ -34,43 +38,53 @@ public class Movie {
     }
 
     // Getters and Setters
-    public Integer getMovieId() {
+    public Integer getMovieId()
+    {
         return movieId;
     }
 
-    public void setMovieId(Integer movieId) {
+    public void setMovieId(Integer movieId)
+    {
         this.movieId = movieId;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public java.sql.Time getDuration() {
+    public java.sql.Time getDuration()
+    {
         return duration;
     }
 
-    public void setDuration(java.sql.Time duration) {
+    public void setDuration(java.sql.Time duration)
+    {
         this.duration = duration;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public Boolean getIsFeatured() {
+    public Boolean getIsFeatured()
+    {
         return isFeatured;
     }
 
-    public void setIsFeatured(Boolean isFeatured) {
+    public void setIsFeatured(Boolean isFeatured)
+    {
         this.isFeatured = isFeatured;
     }
 }
