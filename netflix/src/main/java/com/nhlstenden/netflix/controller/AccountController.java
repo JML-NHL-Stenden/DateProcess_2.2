@@ -33,7 +33,7 @@ public class AccountController
         return ResponseEntity.ok(accountService.getAccountByEmail(email));
     }
 
-    @GetMapping("/id/{accountId}")
+    @GetMapping("/{accountId}")
     public ResponseEntity<Account> getAccountById(@PathVariable Integer accountId)
     {
         return ResponseEntity.ok(accountService.getAccountById(accountId));
