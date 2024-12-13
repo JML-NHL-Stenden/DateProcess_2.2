@@ -1,10 +1,11 @@
 package com.nhlstenden.netflix.service;
 
 import com.nhlstenden.netflix.entity.Account;
+import com.nhlstenden.netflix.exception.ResourceNotFoundException;
 import com.nhlstenden.netflix.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 @Service
@@ -22,15 +23,17 @@ public class AccountService {
     }
 
     public Account getAccountByEmail(String email) {
-        Account account = accountRepository.findByEmail(email);
-        if (account == null) {
-            throw new EntityNotFoundException("Account not found with email: " + email);
-        }
-        return account;
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Account with email '" + email + "' does not exist in the database"));
+    }
+
+    public Account getAccountById(Integer accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account with ID '" + accountId + "' does not exist in the database"));
     }
 
     public Account createAccount(Account account) {
-        if (accountRepository.existsByEmail(account.getEmail())) {
+        if (accountRepository.findByEmail(account.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Account already exists with email: " + account.getEmail());
         }
         return accountRepository.save(account);
@@ -39,6 +42,14 @@ public class AccountService {
     public Account updateAccount(String email, Account account) {
         Account existingAccount = getAccountByEmail(email);
         account.setAccountId(existingAccount.getAccountId());
+        return accountRepository.save(account);
+    }
+
+    public Account addOrUpdateAccount(String email, Account account) {
+        Account existingAccount = accountRepository.findByEmail(email).orElse(null);
+        if (existingAccount != null) {
+            account.setAccountId(existingAccount.getAccountId());
+        }
         return accountRepository.save(account);
     }
 

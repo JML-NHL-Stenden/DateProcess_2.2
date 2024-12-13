@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Netflix@localhost" uuid="7ac7aa07-624e-4ab8-8163-313921a9e034">
+    <data-source source="LOCAL" name="Netflix@localhost" uuid="302449f0-4ad3-4048-9120-67ab8ae460c7">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/Netflix</jdbc-url>
       <jdbc-additional-properties>

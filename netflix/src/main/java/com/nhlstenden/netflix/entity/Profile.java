@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "profile")
-public class Profile {
+public class Profile
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
@@ -30,10 +31,13 @@ public class Profile {
     private Account account;
 
     // Constructors
-    public Profile() {}
+    public Profile()
+    {
+    }
 
     public Profile(String profileName, String profileImage, Integer profileAge, String preferredLanguage,
-                   Boolean isProfileChild, Account account) {
+            Boolean isProfileChild, Account account)
+    {
         this.profileName = profileName;
         this.profileImage = profileImage;
         this.profileAge = profileAge;

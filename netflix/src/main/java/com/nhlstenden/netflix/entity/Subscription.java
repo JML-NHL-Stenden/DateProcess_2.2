@@ -36,7 +36,7 @@ public class Subscription
     }
 
     public Subscription(String subscriptionType, Double subscriptionPrice, String description,
-                        Double discount, Boolean userInvitation, Account account)
+            Double discount, Boolean userInvitation, Account account)
     {
         this.subscriptionType = subscriptionType;
         this.subscriptionPrice = subscriptionPrice;
