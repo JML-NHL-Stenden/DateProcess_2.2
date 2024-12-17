@@ -1,6 +1,5 @@
 package com.nhlstenden.netflix.controller;
 
-import com.nhlstenden.netflix.entity.Account;
 import com.nhlstenden.netflix.entity.Profile;
 import com.nhlstenden.netflix.service.ProfileService;
 import jakarta.persistence.EntityManager;
@@ -44,12 +43,26 @@ public class ProfileController
         return ResponseEntity.ok(profileService.createProfile(profile));
     }
 
+    @PutMapping("/{profileId}")
+    public ResponseEntity<Profile> addOrUpdateProfile(@PathVariable Integer profileId, @RequestBody Profile profile)
+    {
+        Profile result = profileService.addOrUpdateProfile(profileId, profile);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/{profileId}")
+    public ResponseEntity<Void> deleteProfile(@PathVariable Integer profileId)
+    {
+        profileService.deleteProfile(profileId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/all")
-    public ResponseEntity<List<Account>> getAllProfilesDirect()
+    public ResponseEntity<List<Profile>> getAllProfilesDirect()
     {
         Query query = entityManager.createNativeQuery("SELECT * FROM profile", Profile.class);
         @SuppressWarnings("unchecked")
-        List<Account> profiles = (List<Account>) query.getResultList();
+        List<Profile> profiles = (List<Profile>) query.getResultList();
         return ResponseEntity.ok(profiles);
     }
 }

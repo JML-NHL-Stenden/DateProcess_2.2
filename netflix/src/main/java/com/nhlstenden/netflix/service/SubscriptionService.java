@@ -1,5 +1,6 @@
 package com.nhlstenden.netflix.service;
 
+import com.nhlstenden.netflix.entity.Profile;
 import com.nhlstenden.netflix.entity.Subscription;
 import com.nhlstenden.netflix.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,21 @@ public class SubscriptionService
             throw new IllegalArgumentException("Subscription already exists with id: " + subscription.getSubscriptionId());
         }
         return subscriptionRepository.save(subscription);
+    }
+
+    public Subscription addOrUpdateSubscription(Integer id, Subscription subscription)
+    {
+        Subscription existingSubscription = subscriptionRepository.findById(id).orElse(null);
+        if (existingSubscription != null)
+        {
+            subscription.setSubscriptionId(existingSubscription.getSubscriptionId());
+        }
+        return subscriptionRepository.save(subscription);
+    }
+
+    public void deleteSubscription(Integer id)
+    {
+        Subscription subscription = getSubscriptionById(id);
+        subscriptionRepository.deleteById(subscription.getSubscriptionId());
     }
 }

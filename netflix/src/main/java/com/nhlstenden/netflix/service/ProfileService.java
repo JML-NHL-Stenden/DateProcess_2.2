@@ -5,8 +5,6 @@ import com.nhlstenden.netflix.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -21,13 +19,11 @@ public class ProfileService
         this.profileRepository = profileRepository;
     }
 
-    @GetMapping
     public List<Profile> getAllProfiles()
     {
         return profileRepository.findAll();
     }
 
-    @GetMapping("/{profileId}")
     public Profile getProfile(Integer profileId)
     {
         Profile profile = profileRepository.findByProfileId(profileId);
@@ -38,7 +34,6 @@ public class ProfileService
         return profile;
     }
 
-    @PostMapping
     public Profile createProfile(Profile profile)
     {
         if (profileRepository.existsByProfileId(profile.getProfileId()))
@@ -46,5 +41,21 @@ public class ProfileService
             throw new IllegalArgumentException("Profile already exists with id: " + profile.getProfileId());
         }
         return profileRepository.save(profile);
+    }
+
+    public Profile addOrUpdateProfile(Integer id, Profile profile)
+    {
+        Profile existingProfile = profileRepository.findById(id).orElse(null);
+        if (existingProfile != null)
+        {
+            profile.setProfileId(existingProfile.getProfileId());
+        }
+        return profileRepository.save(profile);
+    }
+
+    public void deleteProfile(Integer id)
+    {
+        Profile profile = getProfile(id);
+        profileRepository.deleteById(profile.getProfileId());
     }
 }
