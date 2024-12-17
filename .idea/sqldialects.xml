@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/Desktop/mmo/Netflix_v1_postgresql.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/mmo/backup_netflix_v2_workable" dialect="PostgreSQL" />
+  </component>
+</project>

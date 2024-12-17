@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Netflix@localhost" uuid="302449f0-4ad3-4048-9120-67ab8ae460c7">
+    <data-source source="LOCAL" name="Netflix2@localhost" uuid="d4664b18-7092-4b2a-989a-4bf50613b710">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/Netflix</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/Netflix2</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
