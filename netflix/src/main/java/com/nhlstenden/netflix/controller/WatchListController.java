@@ -40,13 +40,13 @@ public class WatchListController
     @PostMapping
     public ResponseEntity<WatchList> createWatchList(@RequestBody WatchList watchList)
     {
-        return ResponseEntity.ok(watchListService.createProfile(watchList));
+        return ResponseEntity.ok(watchListService.createWatchList(watchList));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<WatchList> addOrUpdateWatchList(@PathVariable Integer watchListId, @RequestBody WatchList watchList)
     {
-        WatchList result = watchListService.addOrUpdateProfile(watchListId, watchList);
+        WatchList result = watchListService.addOrUpdateWatchList(watchListId, watchList);
         return ResponseEntity.ok(result);
     }
 
