@@ -10,65 +10,70 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
-public class AccountController
-{
+public class AccountController {
 
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountService accountService)
-    {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
+    // Get all accounts
     @GetMapping
-    public ResponseEntity<List<Account>> getAllAccounts()
-    {
+    public ResponseEntity<List<Account>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<Account> getAccount(@PathVariable String email)
-    {
+    // Get account by email
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Account> getAccountByEmail(@PathVariable String email) {
         return ResponseEntity.ok(accountService.getAccountByEmail(email));
     }
 
-    @GetMapping("/{accountId}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Integer accountId)
-    {
+    // Get account by ID
+    @GetMapping("/id/{accountId}")
+    public ResponseEntity<Account> getAccountById(@PathVariable Integer accountId) {
         return ResponseEntity.ok(accountService.getAccountById(accountId));
     }
 
+    // Create a new account
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account)
-    {
+    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         return ResponseEntity.ok(accountService.createAccount(account));
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<Account> addOrUpdateAccount(@PathVariable String email, @RequestBody Account account)
-    {
+    // Update account by email
+    @PutMapping("/email/{email}")
+    public ResponseEntity<Account> updateAccount(@PathVariable String email, @RequestBody Account account) {
+        Account result = accountService.updateAccount(email, account);
+        return ResponseEntity.ok(result);
+    }
+
+    // Add or update an account by email
+    @PutMapping("/email/{email}/addOrUpdate")
+    public ResponseEntity<Account> addOrUpdateAccount(@PathVariable String email, @RequestBody Account account) {
         Account result = accountService.addOrUpdateAccount(email, account);
         return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable String email)
-    {
+    // Delete account by email
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable String email) {
         accountService.deleteAccount(email);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{email}/block")
-    public ResponseEntity<Void> blockAccount(@PathVariable String email)
-    {
+    // Block an account by email
+    @PatchMapping("/email/{email}/block")
+    public ResponseEntity<Void> blockAccount(@PathVariable String email) {
         accountService.blockAccount(email);
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{email}/unblock")
-    public ResponseEntity<Void> unblockAccount(@PathVariable String email)
-    {
+    // Unblock an account by email
+    @PatchMapping("/email/{email}/unblock")
+    public ResponseEntity<Void> unblockAccount(@PathVariable String email) {
         accountService.unblockAccount(email);
         return ResponseEntity.ok().build();
     }
