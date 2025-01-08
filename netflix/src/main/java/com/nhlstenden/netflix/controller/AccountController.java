@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     // Get account by email
-    @GetMapping("/email/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<Account> getAccountByEmail(@PathVariable String email) {
         return ResponseEntity.ok(accountService.getAccountByEmail(email));
     }
@@ -43,36 +43,28 @@ public class AccountController {
         return ResponseEntity.ok(accountService.createAccount(account));
     }
 
-    // Update account by email
-    @PutMapping("/email/{email}")
+    // Update an existing account
+    @PutMapping("/{email}")
     public ResponseEntity<Account> updateAccount(@PathVariable String email, @RequestBody Account account) {
-        Account result = accountService.updateAccount(email, account);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(accountService.updateAccount(email, account));
     }
 
-    // Add or update an account by email
-    @PutMapping("/email/{email}/addOrUpdate")
-    public ResponseEntity<Account> addOrUpdateAccount(@PathVariable String email, @RequestBody Account account) {
-        Account result = accountService.addOrUpdateAccount(email, account);
-        return ResponseEntity.ok(result);
-    }
-
-    // Delete account by email
-    @DeleteMapping("/email/{email}")
+    // Delete an account by email
+    @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteAccount(@PathVariable String email) {
         accountService.deleteAccount(email);
         return ResponseEntity.noContent().build();
     }
 
-    // Block an account by email
-    @PatchMapping("/email/{email}/block")
+    // Block an account
+    @PatchMapping("/{email}/block")
     public ResponseEntity<Void> blockAccount(@PathVariable String email) {
         accountService.blockAccount(email);
         return ResponseEntity.ok().build();
     }
 
-    // Unblock an account by email
-    @PatchMapping("/email/{email}/unblock")
+    // Unblock an account
+    @PatchMapping("/{email}/unblock")
     public ResponseEntity<Void> unblockAccount(@PathVariable String email) {
         accountService.unblockAccount(email);
         return ResponseEntity.ok().build();
