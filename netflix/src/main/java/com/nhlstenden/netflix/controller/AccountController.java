@@ -1,12 +1,18 @@
 package com.nhlstenden.netflix.controller;
 
+import com.nhlstenden.netflix.dto.AccountDTO;
 import com.nhlstenden.netflix.entity.Account;
 import com.nhlstenden.netflix.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/accounts")
@@ -19,37 +25,62 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    // Get all accounts
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    // Fetch accounts based on role (via stored procedure)
+    @GetMapping("/{role}")
+    public ResponseEntity<List<Map<String, Object>>> getAccounts(@PathVariable String role) {
+        String query = "SELECT * FROM get_account_data(?)";
+        List<Map<String, Object>> accounts = jdbcTemplate.queryForList(query, role);
+        return ResponseEntity.ok(accounts);
+    }
+
+    // Fetch all accounts
     @GetMapping
     public ResponseEntity<List<Account>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
-    // Get account by email
-    @GetMapping("/{email}")
+    // Fetch account by email
+    @GetMapping("/email/{email}")
     public ResponseEntity<Account> getAccountByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(accountService.getAccountByEmail(email));
+        Optional<Account> account = accountService.getAccountByEmail(email);
+        return account.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Get account by ID
+    // Fetch account by ID
     @GetMapping("/id/{accountId}")
     public ResponseEntity<Account> getAccountById(@PathVariable Integer accountId) {
-        return ResponseEntity.ok(accountService.getAccountById(accountId));
+        Optional<Account> account = accountService.getAccountById(accountId);
+        return account.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Create a new account
+    // Create a new account (DTO applied)
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        return ResponseEntity.ok(accountService.createAccount(account));
+    public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountDTO accountDTO) {
+        Account account = new Account();
+        account.setEmail(accountDTO.getEmail());
+        account.setPassword(accountDTO.getPassword()); // Assume hashing in the service layer
+        account.setRole(accountDTO.getRole() != null ? accountDTO.getRole() : "USER");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(account));
     }
 
-    // Update an existing account
+    // Update an existing account (DTO applied)
     @PutMapping("/{email}")
-    public ResponseEntity<Account> updateAccount(@PathVariable String email, @RequestBody Account account) {
+    public ResponseEntity<Account> updateAccount(@PathVariable String email, @Valid @RequestBody AccountDTO accountDTO) {
+        Account account = new Account();
+        account.setEmail(accountDTO.getEmail());
+        account.setPassword(accountDTO.getPassword()); // Assume hashing in the service layer
+        account.setRole(accountDTO.getRole());
+
         return ResponseEntity.ok(accountService.updateAccount(email, account));
     }
 
-    // Delete an account by email
+    // Delete account by email
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteAccount(@PathVariable String email) {
         accountService.deleteAccount(email);

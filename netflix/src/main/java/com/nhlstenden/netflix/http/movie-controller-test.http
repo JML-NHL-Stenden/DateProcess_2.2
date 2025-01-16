@@ -1,0 +1,15 @@
+### Test JSON Response
+GET http://localhost:8080/movies
+Accept: application/json
+
+###
+
+### Test XML Response
+GET http://localhost:8080/movies/xml
+Accept: application/xml
+
+###
+
+### Test CSV Response
+GET http://localhost:8080/movies/csv
+Accept: text/csv

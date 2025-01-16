@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+<h1 id="welcomeMessage"></h1>
+<button id="logoutButton">Logout</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            // Optional: Add token validation logic or display user information
+            document.getElementById('welcomeMessage').textContent = 'Welcome back!';
+        } else {
+            // If no token, redirect to index.html
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        });
+    });
+
+</script>
+</body>
+</html>

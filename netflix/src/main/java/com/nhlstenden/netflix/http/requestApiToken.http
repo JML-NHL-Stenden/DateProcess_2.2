@@ -1,0 +1,38 @@
+### Register a new user
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "email": "Ramon@outlook.com",
+  "password": "Ramon123"
+}
+
+### Login to get the JWT token
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "Ramon@outlook.com",
+  "password": "Ramon123"
+}
+
+### Create a new account (replace `your_jwt_token_here` with the actual token from the login response)
+POST http://localhost:8080/accounts
+Content-Type: application/json
+Authorization: Bearer your_jwt_token_here
+
+{
+  "email": "newaccount@example.com",
+  "password": "newpassword123",
+  "paymentMethod": "credit_card",
+  "isBlocked": false,
+  "restoreToken": 123456,
+  "accountCreatedDate": "2025-01-09T23:52:14.000Z",
+  "initDurationEnd": "2025-02-09T23:52:14.000Z",
+  "passwordMethod": "bcrypt",
+  "paymentAccountString": "account_string"
+}
+
+### Get all accounts (replace `your_jwt_token_here` with the actual token from the login response)
+GET http://localhost:8080/accounts
+Authorization: Bearer your_jwt_token_here

@@ -3,76 +3,59 @@ package com.nhlstenden.netflix.controller;
 import com.nhlstenden.netflix.entity.Movie;
 import com.nhlstenden.netflix.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
-public class MovieController
-{
+public class MovieController {
 
     private final MovieService movieService;
 
     @Autowired
-    public MovieController(MovieService movieService)
-    {
+    public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies()
-    {
+    // JSON Response
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Movie>> getAllMoviesAsJson() {
         return ResponseEntity.ok(movieService.getAllMovies());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable Integer id)
-    {
-        return ResponseEntity.ok(movieService.getMovieById(id));
+    // XML Response
+    @GetMapping(value = "/xml", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<List<Movie>> getAllMoviesAsXml() {
+        return ResponseEntity.ok(movieService.getAllMovies());
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Movie>> getMoviesByTitle(@RequestParam String title)
-    {
-        return ResponseEntity.ok(movieService.getMoviesByTitle(title));
-    }
+    // CSV Response
+    @GetMapping(value = "/csv", produces = "text/csv")
+    public void getAllMoviesAsCsv(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=movies.csv");
 
-    @GetMapping("/featured")
-    public ResponseEntity<List<Movie>> getFeaturedMovies(@RequestParam Boolean isFeatured)
-    {
-        return ResponseEntity.ok(movieService.getMoviesByFeaturedStatus(isFeatured));
-    }
+        List<Movie> movies = movieService.getAllMovies();
 
-    @PostMapping
-    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie)
-    {
-        return ResponseEntity.ok(movieService.createMovie(movie));
-    }
+        try (PrintWriter writer = response.getWriter()) {
+            // Write CSV header
+            writer.println("Movie ID,Title,Duration,Description,Featured");
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable Integer id, @RequestBody Movie movie)
-    {
-        return ResponseEntity.ok(movieService.updateMovie(id, movie));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMovie(@PathVariable Integer id)
-    {
-        movieService.deleteMovie(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PatchMapping("/{id}/feature")
-    public ResponseEntity<Movie> markAsFeatured(@PathVariable Integer id)
-    {
-        return ResponseEntity.ok(movieService.markAsFeatured(id));
-    }
-
-    @PatchMapping("/{id}/unfeature")
-    public ResponseEntity<Movie> markAsUnfeatured(@PathVariable Integer id)
-    {
-        return ResponseEntity.ok(movieService.markAsUnfeatured(id));
+            // Write CSV rows
+            for (Movie movie : movies) {
+                writer.println(String.format("%d,%s,%s,%s,%b",
+                        movie.getMovieId(),
+                        movie.getTitle(),
+                        movie.getDuration(),
+                        movie.getDescription(),
+                        movie.getIsFeatured()));
+            }
+        }
     }
 }

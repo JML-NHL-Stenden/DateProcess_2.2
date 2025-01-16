@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+</head>
+<body>
+<h1>Login</h1>
+<form id="loginForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="submit">Login</button>
+</form>
+<br>
+<!-- Go Back Button -->
+<button onclick="window.location.href='index.html'">Go Back</button>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const hashedPassword = CryptoJS.SHA256(password).toString();
+
+        try {
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password: hashedPassword })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', result.token); // Save token
+                alert('Login successful!');
+                window.location.href = 'home.html'; // Redirect to home page
+            } else {
+                alert(result.error || 'Login failed');
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+            alert('An error occurred while logging in. Please try again.');
+        }
+    });
+</script>
+</body>
+</html>

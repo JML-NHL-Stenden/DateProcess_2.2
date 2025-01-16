@@ -1,0 +1,21 @@
+### Test Missing Fields
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": "short",
+  "role": "SENIOR"
+}
+
+###
+
+### Test Invalid Email Format
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "email": "invalid-email",
+  "password": "password123",
+  "role": "MEDIOR"
+}
