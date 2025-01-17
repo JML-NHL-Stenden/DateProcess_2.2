@@ -8,16 +8,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProfileService {
+public class ProfileService
+{
 
     private final ProfileRepository profileRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository)
+    {
         this.profileRepository = profileRepository;
     }
 
     @PreAuthorize("hasRole('SENIOR') or hasRole('MEDIOR')") // Exclude Juniors
-    public List<Profile> getAllProfiles() {
+    public List<Profile> getAllProfiles()
+    {
         return profileRepository.findAll();
     }
 }

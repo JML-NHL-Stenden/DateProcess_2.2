@@ -10,17 +10,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profiles")
-public class ProfileController {
+public class ProfileController
+{
 
     private final ProfileService profileService;
 
     @Autowired
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService)
+    {
         this.profileService = profileService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Profile>> getAllProfiles() {
+    public ResponseEntity<List<Profile>> getAllProfiles()
+    {
         return ResponseEntity.ok(profileService.getAllProfiles());
     }
 }

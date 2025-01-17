@@ -9,43 +9,52 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GenreService {
+public class GenreService
+{
 
     private final GenreRepository genreRepository;
 
     @Autowired
-    public GenreService(GenreRepository genreRepository) {
+    public GenreService(GenreRepository genreRepository)
+    {
         this.genreRepository = genreRepository;
     }
 
-    public List<Genre> getAllGenres() {
+    public List<Genre> getAllGenres()
+    {
         return genreRepository.findAll();
     }
 
-    public Genre getGenreById(Integer genreId) {
+    public Genre getGenreById(Integer genreId)
+    {
         return genreRepository.findById(genreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre with ID '" + genreId + "' does not exist in the database"));
     }
 
-    public Genre getGenreByName(String genreName) {
+    public Genre getGenreByName(String genreName)
+    {
         return genreRepository.findByGenreName(genreName)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre with name '" + genreName + "' does not exist in the database"));
     }
 
-    public Genre createGenre(Genre genre) {
-        if (genreRepository.findByGenreName(genre.getGenreName()).isPresent()) {
+    public Genre createGenre(Genre genre)
+    {
+        if (genreRepository.findByGenreName(genre.getGenreName()).isPresent())
+        {
             throw new IllegalArgumentException("Genre already exists with name: " + genre.getGenreName());
         }
         return genreRepository.save(genre);
     }
 
-    public Genre updateGenre(Integer genreId, Genre genre) {
+    public Genre updateGenre(Integer genreId, Genre genre)
+    {
         Genre existingGenre = getGenreById(genreId);
         genre.setGenreId(existingGenre.getGenreId());
         return genreRepository.save(genre);
     }
 
-    public void deleteGenre(Integer genreId) {
+    public void deleteGenre(Integer genreId)
+    {
         Genre genre = getGenreById(genreId);
         genreRepository.deleteById(genre.getGenreId());
     }

@@ -9,35 +9,42 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EpisodeService {
+public class EpisodeService
+{
 
     private final EpisodeRepository episodeRepository;
 
     @Autowired
-    public EpisodeService(EpisodeRepository episodeRepository) {
+    public EpisodeService(EpisodeRepository episodeRepository)
+    {
         this.episodeRepository = episodeRepository;
     }
 
-    public List<Episode> getAllEpisodes() {
+    public List<Episode> getAllEpisodes()
+    {
         return episodeRepository.findAll();
     }
 
-    public Episode getEpisodeById(Integer episodeId) {
+    public Episode getEpisodeById(Integer episodeId)
+    {
         return episodeRepository.findById(episodeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Episode with ID '" + episodeId + "' does not exist in the database"));
     }
 
-    public Episode createEpisode(Episode episode) {
+    public Episode createEpisode(Episode episode)
+    {
         return episodeRepository.save(episode);
     }
 
-    public Episode updateEpisode(Integer episodeId, Episode episode) {
+    public Episode updateEpisode(Integer episodeId, Episode episode)
+    {
         Episode existingEpisode = getEpisodeById(episodeId);
         episode.setEpisodeId(existingEpisode.getEpisodeId());
         return episodeRepository.save(episode);
     }
 
-    public void deleteEpisode(Integer episodeId) {
+    public void deleteEpisode(Integer episodeId)
+    {
         Episode episode = getEpisodeById(episodeId);
         episodeRepository.deleteById(episode.getEpisodeId());
     }

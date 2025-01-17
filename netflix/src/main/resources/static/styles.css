@@ -1,0 +1,134 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000c93; /* Dark background */
+    color: #ffffff; /* Light text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Center container with black-orange design */
+.container {
+    background-color: #1e1e1e; /* Slightly lighter than the body */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Typography */
+h1 {
+    color: #ffa500; /* Orange for headings */
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 20px;
+    color: #dddddd; /* Light gray for text */
+    font-size: 14px;
+}
+
+/* Form styles */
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ffa500; /* Orange labels */
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ffa500;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+input::placeholder {
+    color: #aaaaaa;
+}
+
+/* Button styles */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+button.primary {
+    background-color: #ffa500;
+    color: #121212;
+}
+
+button.primary:hover {
+    background-color: #ff8c00;
+}
+
+button.secondary {
+    background-color: #ffffff;
+    color: #ffa500;
+    border: 2px solid #ffa500;
+}
+
+button.secondary:hover {
+    background-color: #ffa500;
+    color: #ffffff;
+}
+
+/* Logout button */
+button.logout {
+    background-color: #ff4500;
+    color: #ffffff;
+}
+
+button.logout:hover {
+    background-color: #dc143c;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

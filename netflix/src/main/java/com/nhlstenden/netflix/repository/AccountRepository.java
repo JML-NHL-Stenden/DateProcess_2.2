@@ -8,11 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Integer> {
-
-    // Find account by email
+public interface AccountRepository extends JpaRepository<Account, Integer>
+{
     Optional<Account> findByEmail(String email);
-
-    // Find all accounts by role
     List<Account> findAllByRole(String role);
 }

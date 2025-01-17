@@ -1,0 +1,275 @@
+### ExternalApiController
+# Fetch movie details
+GET http://localhost:8080/api/external/movie/Inception
+
+### AccountController
+# Get all accounts
+GET http://localhost:8080/accounts
+
+# Get account by email
+GET http://localhost:8080/accounts/email/test@example.com
+
+# Get account by ID
+GET http://localhost:8080/accounts/id/1
+
+# Create a new account
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "role": "USER"
+}
+
+# Update an account
+PUT http://localhost:8080/accounts/test@example.com
+Content-Type: application/json
+
+{
+  "email": "updated@example.com",
+  "password": "newpassword123",
+  "role": "ADMIN"
+}
+
+# Delete an account
+DELETE http://localhost:8080/accounts/test@example.com
+
+# Block an account
+PATCH http://localhost:8080/accounts/test@example.com/block
+
+# Unblock an account
+PATCH http://localhost:8080/accounts/test@example.com/unblock
+
+# Change password for the authenticated user
+PUT http://localhost:8080/accounts/self/password
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+  "password": "newpassword"
+}
+
+# Delete the authenticated user's account
+DELETE http://localhost:8080/accounts/self
+Authorization: Bearer <token>
+
+### AuthController
+# Register a new user
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "password123",
+  "role": "USER"
+}
+
+# Login a user
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+"email": "newuser@example.com",
+"password": "password123"
+}
+
+### EpisodeController
+# Get all episodes
+GET http://localhost:8080/episodes
+
+# Get episode by ID
+GET http://localhost:8080/episodes/1
+
+# Create a new episode
+POST http://localhost:8080/episodes
+Content-Type: application/json
+
+{
+  "duration": "00:45:00",
+  "title": "Episode Title",
+  "seasonId": 1
+}
+
+# Update an episode
+PUT http://localhost:8080/episodes/1
+Content-Type: application/json
+
+{
+  "duration": "00:50:00",
+  "title": "Updated Title",
+  "seasonId": 1
+}
+
+# Delete an episode
+DELETE http://localhost:8080/episodes/1
+
+### GenreController
+# Get all genres
+GET http://localhost:8080/genres
+
+# Get genre by ID
+GET http://localhost:8080/genres/1
+
+# Get genre by name
+GET http://localhost:8080/genres/name/Action
+
+# Create a new genre
+POST http://localhost:8080/genres
+Content-Type: application/json
+
+{
+  "genreName": "New Genre"
+}
+
+# Update a genre
+PUT http://localhost:8080/genres/1
+Content-Type: application/json
+
+{
+  "genreName": "Updated Genre"
+}
+
+# Delete a genre
+DELETE http://localhost:8080/genres/1
+
+### MovieController
+# Get all movies (JSON)
+GET http://localhost:8080/movies
+
+# Get all movies (XML)
+GET http://localhost:8080/movies/xml
+
+# Get all movies (CSV)
+GET http://localhost:8080/movies/csv
+
+### ProfileController
+# Get all profiles
+GET http://localhost:8080/profiles
+Authorization: Bearer <token>
+
+### QualityController
+# Get all qualities
+GET http://localhost:8080/qualities
+
+# Get quality by ID
+GET http://localhost:8080/qualities/1
+
+# Get quality by name
+GET http://localhost:8080/qualities/name/HD
+
+# Create a new quality
+POST http://localhost:8080/qualities
+Content-Type: application/json
+
+{
+  "quality": "HD"
+}
+
+# Update a quality
+PUT http://localhost:8080/qualities/1
+Content-Type: application/json
+
+{
+  "quality": "4K"
+}
+
+# Delete a quality
+DELETE http://localhost:8080/qualities/1
+
+### SeasonController
+# Get all seasons
+GET http://localhost:8080/seasons
+
+# Get season by ID
+GET http://localhost:8080/seasons/1
+
+# Get seasons by series ID
+GET http://localhost:8080/seasons/series/1
+
+# Get season by series ID and season number
+GET http://localhost:8080/seasons/series/1/number/1
+
+# Create a new season
+POST http://localhost:8080/seasons
+Content-Type: application/json
+
+{
+  "seasonNumber": 1,
+  "seriesId": 1
+}
+
+# Update a season
+PUT http://localhost:8080/seasons/1
+Content-Type: application/json
+
+{
+  "seasonNumber": 2,
+  "seriesId": 1
+}
+
+# Delete a season
+DELETE http://localhost:8080/seasons/1
+
+### SeriesController
+# Get all series
+GET http://localhost:8080/series
+
+# Get series by ID
+GET http://localhost:8080/series/1
+
+# Search series by title
+GET http://localhost:8080/series/search?title=BreakingBad
+
+# Get featured series
+GET http://localhost:8080/series/featured?isFeatured=true
+
+# Create a new series
+POST http://localhost:8080/series
+Content-Type: application/json
+
+{
+  "title": "New Series",
+  "description": "A description of the series",
+  "totalSeasons": 3,
+  "isFeatured": true
+}
+
+# Update a series
+PUT http://localhost:8080/series/1
+Content-Type: application/json
+
+{
+  "title": "Updated Series",
+  "description": "Updated description",
+  "totalSeasons": 4,
+  "isFeatured": false
+}
+
+# Delete a series
+DELETE http://localhost:8080/series/1
+
+# Mark series as featured
+PATCH http://localhost:8080/series/1/feature
+
+# Mark series as unfeatured
+PATCH http://localhost:8080/series/1/unfeature
+
+### SubscriptionController
+# Get all subscriptions
+GET http://localhost:8080/subscriptions
+
+# Get subscription by ID
+GET http://localhost:8080/subscriptions/1
+
+# Create a new subscription
+POST http://localhost:8080/subscriptions
+Content-Type: application/json
+
+{
+  "subscriptionType": "Premium",
+  "subscriptionPrice": 9.99,
+  "description": "Premium subscription plan",
+  "discount": 0.0,
+  "userInvitation": false
+}

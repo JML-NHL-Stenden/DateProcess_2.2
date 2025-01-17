@@ -12,109 +12,185 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService {
+public class AccountService
+{
 
     private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
     private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, BCryptPasswordEncoder passwordEncoder)
+    {
         this.accountRepository = accountRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // Fetch all accounts
-    public List<Account> getAllAccounts() {
+    public List<Account> getAllAccounts()
+    {
         return accountRepository.findAll();
     }
 
-    // Fetch account by email
-    public Optional<Account> getAccountByEmail(String email) {
+    public Optional<Account> getAccountByEmail(String email)
+    {
         return accountRepository.findByEmail(email);
     }
 
-    // Fetch account by ID
-    public Optional<Account> getAccountById(Integer accountId) {
+    public Optional<Account> getAccountById(Integer accountId)
+    {
         return accountRepository.findById(accountId);
     }
 
-    // Create a new account
-    public Account createAccount(Account account) {
+    public Account createAccount(Account account)
+    {
         logger.info("Creating account for email: {}", account.getEmail());
-        account.setPassword(passwordEncoder.encode(account.getPassword())); // Hash the password
-        account.setRole(account.getRole() != null ? account.getRole() : "USER"); // Default role
-        account.setPaymentMethod(null); // Set payment method
+
+        // Check if account with the same email already exists
+        if (accountRepository.findByEmail(account.getEmail()).isPresent())
+        {
+            throw new IllegalArgumentException("Account with email " + account.getEmail() + " already exists.");
+        }
+
+        // Hash the password before saving
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+
+        // Set default role if none is provided
+        if (account.getRole() == null || account.getRole().isEmpty())
+        {
+            account.setRole("USER");
+        }
+
+        // Initialize other optional fields
         account.setIsBlocked(false);
-        account.setRestoreToken(null);
         account.setAccountCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
-        account.setInitDurationEnd(null);
-        account.setPasswordMethod(null);
-        account.setPaymentAccountString(null);
+
         return accountRepository.save(account);
     }
 
-    // Update an existing account
-    public Account updateAccount(String email, Account updatedAccount) {
-        Optional<Account> existingAccount = accountRepository.findByEmail(email);
-        if (existingAccount.isPresent()) {
-            Account account = existingAccount.get();
-            account.setPassword(passwordEncoder.encode(updatedAccount.getPassword())); // Hash the password
-            account.setPaymentMethod(updatedAccount.getPaymentMethod()); // Update payment method
-            account.setIsBlocked(updatedAccount.getIsBlocked());
-            account.setRestoreToken(updatedAccount.getRestoreToken());
-            account.setInitDurationEnd(updatedAccount.getInitDurationEnd());
-            account.setPasswordMethod(updatedAccount.getPasswordMethod());
-            account.setPaymentAccountString(updatedAccount.getPaymentAccountString());
-            account.setRole(updatedAccount.getRole()); // Update role if provided
-            return accountRepository.save(account);
-        } else {
+    // Update - existing account
+    public Account updateAccount(String email, Account updatedAccount)
+    {
+        Optional<Account> existingAccountOptional = accountRepository.findByEmail(email);
+
+        if (existingAccountOptional.isPresent())
+        {
+            Account existingAccount = existingAccountOptional.get();
+
+            // update account details
+            if (updatedAccount.getPassword() != null)
+            {
+                existingAccount.setPassword(passwordEncoder.encode(updatedAccount.getPassword()));
+            }
+            if (updatedAccount.getRole() != null)
+            {
+                existingAccount.setRole(updatedAccount.getRole());
+            }
+            if (updatedAccount.getIsBlocked() != null)
+            {
+                existingAccount.setIsBlocked(updatedAccount.getIsBlocked());
+            }
+
+            logger.info("Updating account for email: {}", email);
+            return accountRepository.save(existingAccount);
+        }
+        else
+        {
             throw new IllegalArgumentException("Account not found with email: " + email);
         }
     }
 
-    // Delete an account
-    public void deleteAccount(String email) {
+    public void deleteAccount(String email)
+    {
         Optional<Account> existingAccount = accountRepository.findByEmail(email);
-        existingAccount.ifPresent(accountRepository::delete);
+        if (existingAccount.isPresent())
+        {
+            accountRepository.delete(existingAccount.get());
+            logger.info("Account deleted: {}", email);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Account not found with email: " + email);
+        }
     }
 
-    // Block an account
-    public void blockAccount(String email) {
+    public void blockAccount(String email)
+    {
         Optional<Account> existingAccount = accountRepository.findByEmail(email);
-        if (existingAccount.isPresent()) {
+        if (existingAccount.isPresent())
+        {
             Account account = existingAccount.get();
             account.setIsBlocked(true);
             accountRepository.save(account);
-        } else {
+            logger.info("Account blocked: {}", email);
+        }
+        else
+        {
             throw new IllegalArgumentException("Account not found with email: " + email);
         }
     }
 
-    // Unblock an account
-    public void unblockAccount(String email) {
+    // unblock an account
+    public void unblockAccount(String email)
+    {
         Optional<Account> existingAccount = accountRepository.findByEmail(email);
-        if (existingAccount.isPresent()) {
+        if (existingAccount.isPresent())
+        {
             Account account = existingAccount.get();
             account.setIsBlocked(false);
             accountRepository.save(account);
-        } else {
+            logger.info("Account unblocked: {}", email);
+        }
+        else
+        {
             throw new IllegalArgumentException("Account not found with email: " + email);
         }
     }
 
-    // Authenticate an account
-    public boolean authenticate(String email, String password) {
+    public boolean authenticate(String email, String password)
+    {
         Optional<Account> accountOptional = accountRepository.findByEmail(email);
-        if (accountOptional.isPresent()) {
+
+        if (accountOptional.isPresent())
+        {
             Account account = accountOptional.get();
-            return passwordEncoder.matches(password, account.getPassword()); // Secure comparison
+
+            // Debugging Logs
+            logger.info("Stored hashed password: {}", account.getPassword());
+            logger.info("Password to verify: {}", password);
+
+            // Compare raw password to hashed password in the database
+            boolean isMatch = passwordEncoder.matches(password, account.getPassword());
+            logger.info("Password match result for {}: {}", email, isMatch);
+
+            return isMatch;
         }
+
+        logger.warn("Account not found for email: {}", email);
         return false;
     }
 
-    // Fetch accounts by role
-    public List<Account> getAccountsByRole(String role) {
-        return accountRepository.findAllByRole(role);
+    public void changePassword(String email, String newPassword)
+    {
+        Optional<Account> accountOptional = accountRepository.findByEmail(email);
+
+        if (accountOptional.isPresent())
+        {
+            Account account = accountOptional.get();
+
+            // Hash the new password
+            String hashedPassword = passwordEncoder.encode(newPassword);
+            logger.info("New hashed password for {}: {}", email, hashedPassword);
+
+            account.setPassword(hashedPassword);
+            accountRepository.save(account);
+
+            logger.info("Password updated for: {}", email);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Account not found with email: " + email);
+        }
     }
+
+
 }

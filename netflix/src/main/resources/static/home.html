@@ -4,28 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-warning {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #a71d2a;
+        }
+
+        label, input {
+            display: block;
+            margin: 10px auto;
+            text-align: left;
+            width: 80%;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        h3 {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-<h1 id="welcomeMessage"></h1>
-<button id="logoutButton">Logout</button>
+<div class="container">
+    <h1 id="welcomeMessage"></h1>
+    <p id="userEmail"></p>
+    <button class="btn" id="logoutButton">Logout</button>
+    <button class="btn-warning" id="deleteAccountButton">Delete Account</button>
+    <button class="btn" id="changePasswordButton">Change Password</button>
+
+    <!-- Change Password Section -->
+    <div id="changePasswordSection" class="hidden">
+        <h3>Change Password</h3>
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" placeholder="Enter new password" required>
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+        <button class="btn" id="savePasswordButton">Save</button>
+        <button class="btn-warning" id="cancelPasswordButton">Cancel</button>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const token = localStorage.getItem('token');
-        if (token) {
-            // Optional: Add token validation logic or display user information
-            document.getElementById('welcomeMessage').textContent = 'Welcome back!';
-        } else {
-            // If no token, redirect to index.html
+
+        if (!token) {
+            alert("No token found! Redirecting to login page.");
             window.location.href = 'index.html';
+            return;
         }
 
+        // Decode token for display purposes
+        try {
+            const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+            const userEmail = decodedToken.email || 'Unknown User';
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${userEmail}`;
+            document.getElementById('userEmail').textContent = `Logged in as: ${userEmail}`;
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            document.getElementById('welcomeMessage').textContent = 'Welcome, Unknown User';
+        }
+
+        // Logout Logic
         document.getElementById('logoutButton').addEventListener('click', () => {
             localStorage.removeItem('token');
+            alert("Logged out successfully.");
             window.location.href = 'index.html';
         });
-    });
 
+        // Delete Account Logic
+        document.getElementById('deleteAccountButton').addEventListener('click', async () => {
+            if (confirm("Are you sure you want to delete this account?")) {
+                try {
+                    const response = await fetch('/accounts/self', {
+                        method: 'DELETE',
+                        headers: {'Authorization': `Bearer ${token}`}
+                    });
+
+                    if (response.ok) {
+                        alert("Account deleted successfully.");
+                        localStorage.removeItem('token');
+                        window.location.href = 'index.html';
+                    } else {
+                        const errorText = await response.text();
+                        console.error("Failed to delete account:", errorText);
+                        alert("Failed to delete account: " + errorText);
+                    }
+                } catch (error) {
+                    console.error("Error deleting account:", error);
+                    alert("An error occurred while deleting the account.");
+                }
+            }
+        });
+
+        // Change Password UI Toggle
+        document.getElementById('changePasswordButton').addEventListener('click', () => {
+            const changePasswordSection = document.getElementById('changePasswordSection');
+            changePasswordSection.classList.toggle('hidden');
+        });
+
+        // Change Password Logic
+        document.getElementById('savePasswordButton').addEventListener('click', async () => {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            try {
+                const response = await fetch('/accounts/self/password', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({password: newPassword})
+                });
+
+                if (response.ok) {
+                    alert("Password changed successfully.");
+                    document.getElementById('changePasswordSection').classList.add('hidden');
+                } else {
+                    const errorText = await response.text();
+                    console.error("Failed to change password:", errorText);
+                    alert("Failed to change password: " + errorText);
+                }
+            } catch (error) {
+                console.error("Error changing password:", error);
+                alert("An error occurred while changing the password.");
+            }
+        });
+
+        // Cancel Button Logic
+        document.getElementById('cancelPasswordButton').addEventListener('click', () => {
+            document.getElementById('changePasswordSection').classList.add('hidden');
+        });
+    });
 </script>
 </body>
 </html>
