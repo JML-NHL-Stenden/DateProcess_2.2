@@ -14,3 +14,6 @@ Password: qwerty
 
 Username :  api_user,  junior_user, medior_user, senior_user
 Password : qwerty
+
+
+To back up server : Open postgresql > tools(application menu) > backup server
