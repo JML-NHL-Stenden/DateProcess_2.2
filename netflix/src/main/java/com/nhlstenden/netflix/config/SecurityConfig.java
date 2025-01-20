@@ -52,6 +52,9 @@ public class SecurityConfig
                         .requestMatchers("/movies/finance/**").hasRole("SENIOR")
                         .requestMatchers("/movies/**").hasAnyRole("SENIOR", "MEDIOR", "JUNIOR")
                         .requestMatchers("/api/**").hasRole("API")
+                        .requestMatchers("/**").permitAll() // Enable so, i can test the api without the authentication.
+
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

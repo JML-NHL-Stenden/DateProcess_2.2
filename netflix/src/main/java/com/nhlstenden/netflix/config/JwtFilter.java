@@ -1,6 +1,5 @@
 package com.nhlstenden.netflix.config;
 
-import com.nhlstenden.netflix.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

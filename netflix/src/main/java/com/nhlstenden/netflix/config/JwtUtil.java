@@ -1,4 +1,4 @@
-package com.nhlstenden.netflix.util;
+package com.nhlstenden.netflix.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

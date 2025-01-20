@@ -1,0 +1,183 @@
+# manual
+# Total API: 41 (GET: 19, POST: 11, PUT: 7, DELETE: 4)
+### GET /accounts
+GET http://localhost:8080/accounts
+
+### GET /accounts/email/{email}
+GET http://localhost:8080/accounts/email/{{email}}
+
+### GET /accounts/id/{accountId}
+GET http://localhost:8080/accounts/id/{{accountId}}
+
+### POST /accounts
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "role": "{{role}}"
+}
+
+### PUT /accounts/{email}
+PUT http://localhost:8080/accounts/{{email}}
+Content-Type: application/json
+
+{
+    "email": "{{new_email}}",
+    "password": "{{new_password}}",
+    "role": "{{new_role}}"
+}
+
+### DELETE /accounts/{email}
+DELETE http://localhost:8080/accounts/{{email}}
+
+### PATCH /accounts/{email}/block
+PATCH http://localhost:8080/accounts/{{email}}/block
+
+### PATCH /accounts/{email}/unblock
+PATCH http://localhost:8080/accounts/{{email}}/unblock
+
+### PUT /accounts/self/password
+PUT http://localhost:8080/accounts/self/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "password": "{{new_password}}"
+}
+
+### DELETE /accounts/self
+DELETE http://localhost:8080/accounts/self
+Authorization: Bearer {{token}}
+
+### POST /auth/register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "role": "{{role}}"
+}
+
+### POST /auth/login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+### GET /episodes
+GET http://localhost:8080/episodes
+
+### GET /episodes/{id}
+GET http://localhost:8080/episodes/{{id}}
+
+### POST /episodes
+POST http://localhost:8080/episodes
+Content-Type: application/json
+
+{
+    "duration": "{{duration}}",
+    "title": "{{title}}",
+    "seasonId": {{seasonId}}
+}
+
+### PUT /episodes/{id}
+PUT http://localhost:8080/episodes/{{id}}
+Content-Type: application/json
+
+{
+    "duration": "{{duration}}",
+    "title": "{{title}}",
+    "seasonId": {{seasonId}}
+}
+
+### DELETE /episodes/{id}
+DELETE http://localhost:8080/episodes/{{id}}
+
+### GET /api/external/movie/{title}
+GET http://localhost:8080/api/external/movie/{{title}}
+
+### GET /genres
+GET http://localhost:8080/genres
+
+### GET /genres/{id}
+GET http://localhost:8080/genres/{{id}}
+
+### GET /genres/name/{name}
+GET http://localhost:8080/genres/name/{{name}}
+
+### POST /genres
+POST http://localhost:8080/genres
+Content-Type: application/json
+
+{
+    "genreName": "{{genreName}}"
+}
+
+### PUT /genres/{id}
+PUT http://localhost:8080/genres/{{id}}
+Content-Type: application/json
+
+{
+    "genreName": "{{genreName}}"
+}
+
+### DELETE /genres/{id}
+DELETE http://localhost:8080/genres/{{id}}
+
+### GET /movies
+GET http://localhost:8080/movies
+
+### GET /movies/xml
+GET http://localhost:8080/movies/xml
+
+### GET /movies/csv
+GET http://localhost:8080/movies/csv
+
+### GET /profiles
+GET http://localhost:8080/profiles
+
+### GET /qualities
+GET http://localhost:8080/qualities
+
+### GET /qualities/{id}
+GET http://localhost:8080/qualities/{{id}}
+
+### GET /qualities/name/{name}
+GET http://localhost:8080/qualities/name/{{name}}
+
+### POST /qualities
+POST http://localhost:8080/qualities
+Content-Type: application/json
+
+{
+    "quality": "{{quality}}"
+}
+
+### PUT /qualities/{id}
+PUT http://localhost:8080/qualities/{{id}}
+Content-Type: application/json
+
+{
+    "quality": "{{quality}}"
+}
+
+### DELETE /qualities/{id}
+DELETE http://localhost:8080/qualities/{{id}}
+
+### GET /seasons
+GET http://localhost:8080/seasons
+
+### GET /seasons/{id}
+GET http://localhost:8080/seasons/{{id}}
+
+### GET /seasons/series/{seriesId}
+GET http://localhost:8080/seasons/series/{{seriesId}}
+
+### GET /seasons/series/{seriesId}/number/{number}
+GET http://localhost:8080/seasons/series/{{seriesId}}/number/{{number}}

@@ -1,12 +1,15 @@
 package com.nhlstenden.netflix.controller;
 
 import com.nhlstenden.netflix.entity.Series;
+import com.nhlstenden.netflix.exception.ResourceNotFoundException;
 import com.nhlstenden.netflix.service.SeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/series")
@@ -28,16 +31,25 @@ public class SeriesController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Series> getSeriesById(@PathVariable Integer id)
-    {
-        return ResponseEntity.ok(seriesService.getSeriesById(id));
+    public ResponseEntity<Object> getSeriesById(@PathVariable Integer id) {
+        try {
+            Series series = seriesService.getSeriesById(id);
+            return ResponseEntity.ok(series); // 200 OK
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("status", 404, "message", e.getMessage())); // 404 Not Found
+        }
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Series>> getSeriesByTitle(@RequestParam String title)
-    {
-        return ResponseEntity.ok(seriesService.getSeriesByTitle(title));
+    public ResponseEntity<Object> getSeriesByTitle(@RequestParam String title) {
+        List<Series> series = seriesService.getSeriesByTitle(title);
+        if (series.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // 204 No Content
+        }
+        return ResponseEntity.ok(series); // 200 OK
     }
+
 
     @GetMapping("/featured")
     public ResponseEntity<List<Series>> getSeriesByFeatured(@RequestParam Boolean isFeatured)

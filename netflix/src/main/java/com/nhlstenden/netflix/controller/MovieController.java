@@ -3,6 +3,7 @@ package com.nhlstenden.netflix.controller;
 import com.nhlstenden.netflix.entity.Movie;
 import com.nhlstenden.netflix.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,15 @@ public class MovieController
     public MovieController(MovieService movieService)
     {
         this.movieService = movieService;
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> getAllMovies() {
+        List<Movie> movies = movieService.getAllMovies();
+        if (movies.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // 204 No Content
+        }
+        return ResponseEntity.ok(movies); // 200 OK
     }
 
     // JSON Response

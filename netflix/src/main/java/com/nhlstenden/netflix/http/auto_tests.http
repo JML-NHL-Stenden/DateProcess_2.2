@@ -1,0 +1,172 @@
+# auto
+# Total API: 41 (GET: 19, POST: 11, PUT: 7, DELETE: 4)
+### GET /accounts
+GET http://localhost:8080/accounts
+
+### GET /accounts/email/admin@example.com
+GET http://localhost:8080/accounts/email/admin@example.com
+
+### GET /accounts/id/1
+GET http://localhost:8080/accounts/id/1
+
+### POST /accounts
+POST http://localhost:8080/accounts
+Content-Type: application/json
+{
+    "email": "test@example.com",
+    "password": "password123",
+    "role": "USER"
+}
+
+### PUT /accounts/test@example.com
+PUT http://localhost:8080/accounts/test@example.com
+Content-Type: application/json
+{
+    "email": "updated@example.com",
+    "password": "newpassword123",
+    "role": "ADMIN"
+}
+
+### DELETE /accounts/updated@example.com
+DELETE http://localhost:8080/accounts/updated@example.com
+
+### PATCH /accounts/admin@example.com/block
+PATCH http://localhost:8080/accounts/admin@example.com/block
+
+### PATCH /accounts/admin@example.com/unblock
+PATCH http://localhost:8080/accounts/admin@example.com/unblock
+
+### PUT /accounts/self/password
+PUT http://localhost:8080/accounts/self/password
+Authorization: Bearer example.jwt.token
+Content-Type: application/json
+{
+    "password": "newsecurepassword123"
+}
+
+### DELETE /accounts/self
+DELETE http://localhost:8080/accounts/self
+Authorization: Bearer example.jwt.token
+
+### POST /auth/register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+{
+    "email": "newuser@example.com",
+    "password": "securepassword123",
+    "role": "USER"
+}
+
+### POST /auth/login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+{
+    "email": "newuser@example.com",
+    "password": "securepassword123"
+}
+
+### GET /episodes
+GET http://localhost:8080/episodes
+
+### GET /episodes/1
+GET http://localhost:8080/episodes/1
+
+### POST /episodes
+POST http://localhost:8080/episodes
+Content-Type: application/json
+{
+    "duration": "00:30:00",
+    "title": "Episode 1",
+    "seasonId": 1
+}
+
+### PUT /episodes/1
+PUT http://localhost:8080/episodes/1
+Content-Type: application/json
+{
+    "duration": "00:45:00",
+    "title": "Updated Episode",
+    "seasonId": 1
+}
+
+### DELETE /episodes/1
+DELETE http://localhost:8080/episodes/1
+
+### GET /api/external/movie/Inception
+GET http://localhost:8080/api/external/movie/Inception
+
+### GET /genres
+GET http://localhost:8080/genres
+
+### GET /genres/1
+GET http://localhost:8080/genres/1
+
+### GET /genres/name/Action
+GET http://localhost:8080/genres/name/Action
+
+### POST /genres
+POST http://localhost:8080/genres
+Content-Type: application/json
+{
+    "genreName": "Adventure"
+}
+
+### PUT /genres/1
+PUT http://localhost:8080/genres/1
+Content-Type: application/json
+{
+    "genreName": "Updated Genre"
+}
+
+### DELETE /genres/1
+DELETE http://localhost:8080/genres/1
+
+### GET /movies
+GET http://localhost:8080/movies
+
+### GET /movies/xml
+GET http://localhost:8080/movies/xml
+
+### GET /movies/csv
+GET http://localhost:8080/movies/csv
+
+### GET /profiles
+GET http://localhost:8080/profiles
+
+### GET /qualities
+GET http://localhost:8080/qualities
+
+### GET /qualities/1
+GET http://localhost:8080/qualities/1
+
+### GET /qualities/name/HD
+GET http://localhost:8080/qualities/name/HD
+
+### POST /qualities
+POST http://localhost:8080/qualities
+Content-Type: application/json
+{
+    "quality": "4K"
+}
+
+### PUT /qualities/1
+PUT http://localhost:8080/qualities/1
+Content-Type: application/json
+{
+    "quality": "Updated Quality"
+}
+
+### DELETE /qualities/1
+DELETE http://localhost:8080/qualities/1
+
+### GET /seasons
+GET http://localhost:8080/seasons
+
+### GET /seasons/1
+GET http://localhost:8080/seasons/1
+
+### GET /seasons/series/1
+GET http://localhost:8080/seasons/series/1
+
+### GET /seasons/series/1/number/1
+GET http://localhost:8080/seasons/series/1/number/1

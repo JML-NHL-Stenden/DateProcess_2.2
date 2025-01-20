@@ -1,0 +1,16 @@
+
+
+In Config > SecurityConfig:
+.requestMatchers("/**").permitAll() // Enable so, i can test the api without the authentication.
+
+Disable this to test the authentication.
+
+-----------------
+
+Roles - database
+
+User: Admin
+Password: qwerty
+
+Username :  api_user,  junior_user, medior_user, senior_user
+Password : qwerty

@@ -1,14 +1,13 @@
 package com.nhlstenden.netflix.controller;
 
 import com.nhlstenden.netflix.entity.Subscription;
+import com.nhlstenden.netflix.exception.ResourceNotFoundException;
 import com.nhlstenden.netflix.service.SubscriptionService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,10 +32,14 @@ public class SubscriptionController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subscription> getSubscription(int id)
-    {
-        return ResponseEntity.ok(subscriptionService.getSubscriptionById(id));
+    public ResponseEntity<Subscription> getSubscription(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(subscriptionService.getSubscriptionById(id));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
+
 
     @PostMapping
     public ResponseEntity<Subscription> createSubscription(Subscription subscription)
